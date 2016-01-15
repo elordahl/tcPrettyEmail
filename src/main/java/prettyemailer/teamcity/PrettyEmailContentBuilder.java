@@ -5,7 +5,9 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.Map;
 import jetbrains.buildServer.serverSide.BuildStatisticsOptions;
 import jetbrains.buildServer.serverSide.CompilationBlockBean;
 import jetbrains.buildServer.serverSide.SBuildServer;
@@ -94,6 +96,23 @@ public class PrettyEmailContentBuilder {
 	
 	public int getIgnoredTestCount(){
 		return shortStats.getIgnoredTestCount();
+	}
+
+	//temporary. to see a list of variables and if they can be used by a groovy.  list is confirmed below
+	public Set<String> getParameterKeys(){
+		return this.sRunningBuild.getBuildOwnParameters().keySet();
+	}
+
+	//if set cannot be used, try this
+	public List<String> getParameterKeysList(){
+		List<String> mylist = new ArrayList<String>();
+		mylist.addAll(this.getParameterKeys());
+		return mylist;
+	}
+
+	//should only need this, once i know what parameters look like.  i.e. env.PARAMETER_NAME
+	public String getParameterByName(String key){
+		return this.sRunningBuild.getBuildOwnParameters().get(key);
 	}
 	
 	public String getProjectName(){
